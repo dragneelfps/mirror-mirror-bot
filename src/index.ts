@@ -63,9 +63,19 @@ setEventCallback(eventRegex.commandsRegex.disk, eventRegex.commandsRegexNoName.d
     exec(`df --output="size,used,avail" -h "${constants.ARIA_DOWNLOAD_LOCATION_ROOT}" | tail -n1`,
       (err, res) => {
         var disk = res.trim().split(/\s+/);
-        msgTools.sendMessage(bot, msg, `Total space: ${disk[0]}B\nUsed: ${disk[1]}B\nAvailable: ${disk[2]}B`);
+        msgTools.sendMessage(bot, msg, `Total space 2: ${disk[0]}B\nUsed: ${disk[1]}B\nAvailable: ${disk[2]}B`);
       }
     );
+  }
+});
+
+setEventCallback(eventRegex.commandsRegex.url, eventRegex.commandsRegexNoName.url, (msg, match) => {
+  if (msgTools.isAuthorized(msg) < 0) {
+    msgTools.sendUnauthorizedMessage(bot, msg);
+  } else {
+    exec(`youtube-dl -g ${match[2]}`, (err, res) => {
+      msgTools.sendMessage(bot, msg, res);
+    });
   }
 });
 
@@ -77,9 +87,13 @@ setEventCallback(eventRegex.commandsRegex.disk, eventRegex.commandsRegexNoName.d
  * @param {boolean} isTar Decides if this download should be archived before upload
  */
 function mirror(msg: TelegramBot.Message, match: RegExpExecArray, isTar?: boolean): void {
+  mirrorActual(msg, match[2], isTar);
+}
+
+function mirrorActual(msg: TelegramBot.Message, url: string, isTar?: boolean): void {
   if (websocketOpened) {
-    if (downloadUtils.isDownloadAllowed(match[2])) {
-      prepDownload(msg, match[2], isTar);
+    if (downloadUtils.isDownloadAllowed(url)) {
+      prepDownload(msg, url, isTar);
     } else {
       msgTools.sendMessage(bot, msg, `Download failed. Blacklisted URL.`);
     }
