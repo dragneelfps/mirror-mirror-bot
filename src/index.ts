@@ -86,6 +86,21 @@ setEventCallback(commands.ping.command,  commands.ping.commandNoName, (msg) => {
   }
 });
 
+setEventCallback(commands.commands.command,  commands.commands.commandNoName, (msg) => {
+  if (msgTools.isAuthorized(msg) < 0) {
+    msgTools.sendUnauthorizedMessage(bot, msg);
+  } else {
+    const commands = getAllCommands();
+    msgTools.sendMessage(bot, msg, commands);
+  }
+});
+
+function getAllCommands(): string {
+  return Object.keys(commands).map((command) => {
+    return `${command}` + ` ${commands[command].help}`;
+  }).join("\n");
+}
+
 /**
  * Start a new download operation. Make sure that this is triggered by an
  * authorized user, because this function itself does not check for that.

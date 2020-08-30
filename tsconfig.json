@@ -3,7 +3,7 @@
     "outDir": "./out",
     "target": "es6",
     "module": "commonjs",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "allowJs": true,
     "sourceMap": false

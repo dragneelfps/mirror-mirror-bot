@@ -3,8 +3,11 @@ import constants = require('../.constants');
 class Command {
     readonly command: RegExp;
     readonly commandNoName: RegExp;
+    readonly help: string;
 
-    constructor(command: string, after: string, forceBotName: boolean = false) {
+    constructor(command: string, after: string, help?: string, forceBotName?: boolean) {
+        this.help = help || "";
+
         let fullCommand: string;
 
         if (constants.COMMANDS_USE_BOT_NAME && constants.COMMANDS_USE_BOT_NAME.ENABLED && forceBotName) {
@@ -27,10 +30,11 @@ export default {
     mirrorTar: new Command("^/mirrorTar", " (.+)"),
     mirror: new Command("^/mirror", " (.+)"),
     mirrorStatus: new Command("^/mirrorStatus", "$"),
-    list: new Command("^/list", " (.+)", true),
+    list: new Command("^/list", " (.+)", "", true),
     getFolder: new Command("^/getFolder", "$"),
     cancelMirror: new Command("^/cancelMirror", "$"),
     cancelAll: new Command("^/cancelAll", "$"),
     disk: new Command("^/disk", "$"),
     url: new Command("^/url", " (.+)"),
+    commands: new Command("^/commands", "$", "Prints list of commands"),
 }
