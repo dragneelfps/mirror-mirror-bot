@@ -9,10 +9,9 @@ import driveList = require('./drive/drive-list.js');
 import driveUtils = require('./drive/drive-utils.js');
 import details = require('./dl_model/detail');
 import filenameUtils = require('./download_tools/filename-utils');
-import { EventRegex } from './bot_utils/event_regex';
 import { exec } from 'child_process';
+import commands from './bot_utils/commands';
 
-const eventRegex = new EventRegex();
 const bot = new TelegramBot(constants.TOKEN, { polling: true });
 var websocketOpened = false;
 var statusInterval: NodeJS.Timeout;
@@ -32,7 +31,7 @@ function setEventCallback(regexp: RegExp, regexpNoName: RegExp,
   });
 }
 
-setEventCallback(eventRegex.commandsRegex.start, eventRegex.commandsRegexNoName.start, (msg) => {
+setEventCallback(commands.start.command,  commands.start.commandNoName, (msg) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -40,7 +39,7 @@ setEventCallback(eventRegex.commandsRegex.start, eventRegex.commandsRegexNoName.
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.mirrorTar, eventRegex.commandsRegexNoName.mirrorTar, (msg, match) => {
+setEventCallback(commands.mirrorTar.command,  commands.mirrorTar.commandNoName, (msg, match) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -48,7 +47,7 @@ setEventCallback(eventRegex.commandsRegex.mirrorTar, eventRegex.commandsRegexNoN
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.mirror, eventRegex.commandsRegexNoName.mirror, (msg, match) => {
+setEventCallback(commands.mirror.command,  commands.mirror.commandNoName, (msg, match) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -56,7 +55,7 @@ setEventCallback(eventRegex.commandsRegex.mirror, eventRegex.commandsRegexNoName
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.disk, eventRegex.commandsRegexNoName.disk, (msg) => {
+setEventCallback(commands.disk.command,  commands.disk.commandNoName, (msg) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -69,7 +68,7 @@ setEventCallback(eventRegex.commandsRegex.disk, eventRegex.commandsRegexNoName.d
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.url, eventRegex.commandsRegexNoName.url, (msg, match) => {
+setEventCallback(commands.url.command,  commands.url.commandNoName, (msg, match) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -102,7 +101,7 @@ function mirrorActual(msg: TelegramBot.Message, url: string, isTar?: boolean): v
   }
 }
 
-setEventCallback(eventRegex.commandsRegex.mirrorStatus, eventRegex.commandsRegexNoName.mirrorStatus, (msg) => {
+setEventCallback(commands.mirrorStatus.command,  commands.mirrorStatus.commandNoName, (msg) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -110,7 +109,7 @@ setEventCallback(eventRegex.commandsRegex.mirrorStatus, eventRegex.commandsRegex
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.list, eventRegex.commandsRegexNoName.list, (msg, match) => {
+setEventCallback(commands.list.command,  commands.list.commandNoName, (msg, match) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -124,7 +123,7 @@ setEventCallback(eventRegex.commandsRegex.list, eventRegex.commandsRegexNoName.l
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.getFolder, eventRegex.commandsRegexNoName.getFolder, (msg) => {
+setEventCallback(commands.getFolder.command,  commands.getFolder.commandNoName, (msg) => {
   if (msgTools.isAuthorized(msg) < 0) {
     msgTools.sendUnauthorizedMessage(bot, msg);
   } else {
@@ -134,7 +133,7 @@ setEventCallback(eventRegex.commandsRegex.getFolder, eventRegex.commandsRegexNoN
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.cancelMirror, eventRegex.commandsRegexNoName.cancelMirror, (msg) => {
+setEventCallback(commands.cancelMirror.command,  commands.cancelMirror.commandNoName, (msg) => {
   var authorizedCode = msgTools.isAuthorized(msg);
   if (msg.reply_to_message) {
     var dlDetails = dlManager.getDownloadByMsgId(msg.reply_to_message);
@@ -161,7 +160,7 @@ setEventCallback(eventRegex.commandsRegex.cancelMirror, eventRegex.commandsRegex
   }
 });
 
-setEventCallback(eventRegex.commandsRegex.cancelAll, eventRegex.commandsRegexNoName.cancelAll, (msg) => {
+setEventCallback(commands.cancelAll.command,  commands.cancelAll.commandNoName, (msg) => {
   var authorizedCode = msgTools.isAuthorized(msg, true);
   if (authorizedCode === 0) {
     // One of SUDO_USERS. Cancel all downloads
