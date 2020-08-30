@@ -78,6 +78,14 @@ setEventCallback(commands.url.command,  commands.url.commandNoName, (msg, match)
   }
 });
 
+setEventCallback(commands.ping.command,  commands.ping.commandNoName, (msg) => {
+  if (msgTools.isAuthorized(msg) < 0) {
+    msgTools.sendUnauthorizedMessage(bot, msg);
+  } else {
+    msgTools.sendMessage(bot, msg, "I am Alive!!");
+  }
+});
+
 /**
  * Start a new download operation. Make sure that this is triggered by an
  * authorized user, because this function itself does not check for that.

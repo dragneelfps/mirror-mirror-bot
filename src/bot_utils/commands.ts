@@ -23,6 +23,7 @@ function getNamelessCommand(prefix: string, after: string): string {
 
 export default {
     start: new Command("^/start", "$"),
+    ping: new Command("^/ping", "$"),
     mirrorTar: new Command("^/mirrorTar", " (.+)"),
     mirror: new Command("^/mirror", " (.+)"),
     mirrorStatus: new Command("^/mirrorStatus", "$"),
